@@ -10,6 +10,7 @@ python = "^3.12"
 tf-keras = "^2.16.0"
 tensorflow = "^2.16.2"
 deepface = "^0.0.92"
+pytest-mock = "^3.14.0"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.19.2"
