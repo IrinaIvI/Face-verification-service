@@ -11,7 +11,8 @@ run_tests:
     - pip install poetry
     - poetry install
   script:
-    - apt-get update && apt-get install libgl1
+    - apt-get update -yqq
+    - apt-get install -yqq libgl1-mesa-glx
     - export PYTHONPATH=$PYTHONPATH:/builds/shift-python/y2024/homeworks/iivashko/face-verification-service/src
     - poetry run pytest -v
 
