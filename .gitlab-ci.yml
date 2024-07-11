@@ -11,6 +11,7 @@ run_tests:
     - pip install poetry
     - poetry install
   script:
+    - RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
     - export PYTHONPATH=$PYTHONPATH:/builds/shift-python/y2024/homeworks/iivashko/face-verification-service/src
     - poetry run pytest -v
 
