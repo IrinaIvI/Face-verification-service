@@ -1,5 +1,4 @@
 from deepface import DeepFace
-#import time
 
 
 class FaceVerification:
