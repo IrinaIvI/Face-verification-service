@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
 
-from app.face_verification import FaceVerification, UserStorage
+from app.face_verification import FaceVerification
 
 router = APIRouter(
     prefix="/face_verification_service",
