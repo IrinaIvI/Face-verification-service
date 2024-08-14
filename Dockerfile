@@ -23,3 +23,5 @@ RUN poetry install --no-interaction --no-ansi -vvv
 COPY ./src /app
 
 ENTRYPOINT ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
+# ENTRYPOINT ["poetry", "run", "python", "app/face_verification.py"]
+
