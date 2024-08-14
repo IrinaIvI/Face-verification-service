@@ -40,4 +40,10 @@ class Consumer:
             face_verification = FaceVerification()
             face_vector = face_verification.embedings_vector(img_path)
 
+            # Логирование вектора лица
             logging.info(f"Вектор лица для пользователя {user_id}: {face_vector}")
+
+            # Дополнительная проверка или логирование результата
+            verification_result = face_verification.check_user(user_id, face_vector)
+            logging.info(f"Verification result for user {user_id}: {verification_result}")
+
