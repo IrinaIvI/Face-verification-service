@@ -5,18 +5,21 @@ import asyncio
 
 consumer = Consumer()
 
-app = FastAPI(title='FaceVerification Service')
-app.include_router(router)
-
-@app.lifespan
 async def lifespan(app: FastAPI):
+    """Управление жизненным циклом приложения."""
     # Запуск консюмера
     task = asyncio.create_task(consumer.start())
+    try:
+        # Период работы приложения
+        yield
+    finally:
+        # Остановка консюмера
+        await consumer.stop()
+        await task
 
-    # При завершении работы приложения
-    yield
+app = FastAPI(title='FaceVerification Service', lifespan=lifespan)
 
-    # Остановка консюмера
-    await consumer.stop()
-    await task
+app.include_router(router)
+
+
 
