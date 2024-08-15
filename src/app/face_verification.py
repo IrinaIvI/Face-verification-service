@@ -1,7 +1,6 @@
 from deepface import DeepFace
 from dataclasses import dataclass, field
-import asyncio
-import os
+
 
 @dataclass
 class User:
@@ -44,6 +43,7 @@ class FaceVerification:
     model: str = 'FaceNet'
 
     def embedings_vector(self, img_path: str) -> list[float]:
+        """Формирование вектора."""
         vector = DeepFace.represent(img_path=img_path)
         return vector
 

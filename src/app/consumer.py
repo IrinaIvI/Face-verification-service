@@ -25,7 +25,6 @@ class Consumer:
 
     async def process_message(self, message):
         """Обработка сообщения из Kafka."""
-        # Декодирование сообщения
         decoded_message = message.value.decode('utf-8')
         logging.info(f"Получено сообщение: {decoded_message}")
 
@@ -33,17 +32,13 @@ class Consumer:
         img_path = data.get('photo_path')
         user_id = data.get('user_id')
 
-        # Логирование извлеченных данных
         logging.info(f'Извлечённые данные - img_path: {img_path}, user_id: {user_id}')
 
         if img_path and user_id:
             face_verification = FaceVerification()
             face_vector = face_verification.embedings_vector(img_path)
-
-            # Логирование вектора лица
-            logging.info(f"Вектор лица для пользователя {user_id}: {face_vector}")
-
-            # Дополнительная проверка или логирование результата
             verification_result = face_verification.check_user(user_id, face_vector)
-            logging.info(f"Verification result for user {user_id}: {verification_result}")
+            if verification_result:
+                logging.info(f"Вектор лица для пользователя {user_id}: {face_vector}")
+
 
