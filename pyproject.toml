@@ -6,12 +6,13 @@ authors = ["Irina Ivashko <ira.ivashko.99@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11.2"
 tf-keras = "^2.16.0"
 tensorflow = "^2.16.2"
 deepface = "^0.0.92"
 pytest-mock = "^3.14.0"
 fastapi = "^0.111.1"
+uvicorn = "^0.30.5"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.19.2"
