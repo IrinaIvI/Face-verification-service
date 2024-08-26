@@ -10,8 +10,8 @@ Base = declarative_base(metadata=metadata)
 mapper_registry = registry()
 
 class UserFaceData(Base):
-    tablename = "userfacedata_ivashko"
-
+    __tablename__ = "userfacedata_ivashko"
+    
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('ivashko_schema.users_ivashko.id'))
     vector = Column(ARRAY(Numeric(8, 7)), nullable=False)
