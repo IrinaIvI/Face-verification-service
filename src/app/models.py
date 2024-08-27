@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, TIMESTAMP, ForeignKey, Table, ARRAY, Numeric, MetaData
 from sqlalchemy.ext.declarative import declarative_base
-#from ....common_base import Base
 from sqlalchemy.orm import registry
 from .database import engine
 
@@ -11,7 +10,7 @@ mapper_registry = registry()
 
 class UserFaceData(Base):
     __tablename__ = "userfacedata_ivashko"
-    
+
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('ivashko_schema.users_ivashko.id'))
     vector = Column(ARRAY(Numeric(8, 7)), nullable=False)

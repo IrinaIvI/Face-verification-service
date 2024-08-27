@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ivashko-migrate-job-face-verification
+  namespace: test
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: merewhale/face_verification
+        command: ["poetry", "run", "alembic", "upgrade", "head"]
+        env:
+        - name: PYTHONPATH
+          value: /workspace/src/app
+        - name: KAFKA_HOST
+          value: infro-kafka-controller-headless:9092
+        - name: POSTGRES_HOST
+          value: http://postgres-service:5432
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
+        - name: POSTGRES_DB
+          value: iivashko
+        # resources:
+        #   requests:
+        #     memory: "4Gi"
+        #     cpu: "1"
+        #   limits:
+        #     memory: "6Gi"
+        #     cpu: "2"
+      restartPolicy: Never
