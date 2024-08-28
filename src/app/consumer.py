@@ -3,7 +3,7 @@ import logging
 import os
 import json
 from app.face_verification import FaceVerification
-from sqlalchemy.orm import Session
+from app.database import get_db
 
 KAFKA_BROKER = os.environ.get('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9092')
 KAFKA_TOPIC = 'ivashko_topic_face_verification'
@@ -12,9 +12,8 @@ logging.basicConfig(level=logging.INFO)
 class Consumer:
     """Класс для прослушивания топика Kafka и обработки сообщений."""
 
-    def init(self, db: Session):
+    def __init__(self):
         self.consumer = AIOKafkaConsumer(KAFKA_TOPIC, bootstrap_servers=KAFKA_BROKER)
-        self.db = db
 
     async def start(self):
         """Запускает консумер и обрабатывает сообщения."""
@@ -37,6 +36,8 @@ class Consumer:
         logging.info(f'Извлечённые данные - img_path: {img_path}, user_id: {user_id}')
 
         if img_path and user_id:
-            face_verification = FaceVerification()
-            face_vector = face_verification.embedings_vector(img_path)
-            logging.info(f"Вектор лица для пользователя {user_id}: {face_vector}")
+            db = next(get_db())
+            face_verification = FaceVerification(db)
+            verified = face_verification.verify(user_id, img_path)
+            logging.info(verified)
+
