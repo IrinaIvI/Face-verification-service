@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: migrate
-        image: merewhale/face_verification
+        image: merewhale/face_verification:1.0.0
         command: ["poetry", "run", "alembic", "upgrade", "head"]
         env:
         - name: PYTHONPATH

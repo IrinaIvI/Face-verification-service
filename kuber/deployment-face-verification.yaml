@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: face-verification
-        image: merewhale/face_verification
+        image: merewhale/face_verification:1.0.0
         env:
         - name: PYTHONPATH
           value: /workspace/src/app
