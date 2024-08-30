@@ -1,12 +1,8 @@
 from sqlalchemy import Column, Integer, TIMESTAMP, ForeignKey, Table, ARRAY, Numeric, MetaData
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import registry
-from .database import engine
 
 metadata = MetaData(schema="ivashko_schema")
 Base = declarative_base(metadata=metadata)
-
-mapper_registry = registry()
 
 class UserFaceData(Base):
     __tablename__ = "userfacedata_ivashko"
@@ -17,9 +13,3 @@ class UserFaceData(Base):
     created_at = Column(TIMESTAMP, default=None)
     updated_at = Column(TIMESTAMP, default=None)
 
-user_table = Table('users_ivashko', Base.metadata, autoload_with=engine, schema='ivashko_schema')
-
-class User:
-    pass
-
-mapper_registry.map_imperatively(User, user_table)

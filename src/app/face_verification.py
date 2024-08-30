@@ -13,26 +13,17 @@ class FaceVerification:
 
     def verify(self, user_id: int, img_path: str) -> bool:
         """Верификация пользователя."""
-        logging.info("Верификация начата")
-
         try:
             vector = DeepFace.represent(img_path=img_path)
-            logging.info("Вектор создан: %s", vector)
         except Exception as e:
-            logging.error("Ошибка при создании вектора: %s", e)
+            logging.error(f'Ошибка при создании вектора: {e}')
             return False
 
-        try:
-            verified = self.check_user(user_id, vector)
-        except Exception as e:
-            logging.error("Ошибка при проверке пользователя: %s", e)
-            return False
-
+        verified = self.check_user(user_id, vector)
         return verified
 
     def check_user(self, user_id: int, vector: list[float]) -> bool:
         """Проверка наличия пользователя в базе."""
-        logging.info("Проверка пользователя с ID %d", user_id)
         verified = False
         embedding_vector = vector[0].get('embedding')
 
@@ -41,16 +32,13 @@ class FaceVerification:
 
             if user_face_data:
                 if user_face_data.vector == vector:
-                    logging.info("Пользователь найден и вектор совпадает")
                     verified = True
                 else:
-                    logging.info("Пользователь найден, но вектор обновлён")
                     user_face_data.vector = vector
                     user_face_data.updated_at = datetime.now()
                     self.db.commit()
                     verified = True
             else:
-                logging.info("Пользователь не найден, добавление новой записи")
                 new_user_face_data = UserFaceData(
                     user_id=user_id,
                     vector=embedding_vector,
@@ -62,6 +50,6 @@ class FaceVerification:
                 verified = True
 
         except Exception as e:
-            logging.error("Ошибка при доступе к базе данных: %s", e)
+            logging.error(f'Ошибка при доступе к базе данных: {e}')
 
         return verified
