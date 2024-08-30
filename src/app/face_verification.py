@@ -42,9 +42,14 @@ class FaceVerification:
     user_storage: UserStorage = UserStorage()
     model: str = 'FaceNet'
 
+    def embedings_vector(self, img_path: str) -> list[float]:
+        """Формирование вектора."""
+        vector = DeepFace.represent(img_path=img_path)
+        return vector
+
     def verify(self, user_id: int, img_path: str) -> bool:
         """Верификация пользователя."""
-        vector = DeepFace.represent(img_path=img_path)
+        vector = self.embedings_vector(img_path)
         return self.check_user(user_id, vector)
 
     def check_user(self, user_id: int, vector: list[float]) -> bool:
