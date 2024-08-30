@@ -11,10 +11,15 @@ class FaceVerification:
     def __init__(self, db: Session):
         self.db = db
 
+    def embedings_vector(self, img_path: str) -> list[float]:
+        """Формирование вектора."""
+        vector = DeepFace.represent(img_path=img_path)
+        return vector
+
     def verify(self, user_id: int, img_path: str) -> bool:
         """Верификация пользователя."""
         try:
-            vector = DeepFace.represent(img_path=img_path)
+            vector = self.embedings_vector(img_path=img_path)
         except Exception as e:
             logging.error(f'Ошибка при создании вектора: {e}')
             return False

@@ -21,3 +21,4 @@ COPY migrations /app/migrations
 COPY ./src /app
 
 ENTRYPOINT ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8003"]
+
