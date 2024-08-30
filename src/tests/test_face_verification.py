@@ -1,6 +1,7 @@
 from app.face_verification import FaceVerification
 import pytest
 from pytest_mock import MockerFixture
+from app.database import get_db
 
 
 @pytest.mark.parametrize('user_id, file_name', [
@@ -10,5 +11,6 @@ from pytest_mock import MockerFixture
 ])
 def test_embeddings_vec(user_id: int, file_name, mocker: MockerFixture):
     vector = mocker.patch('app.face_verification.DeepFace.represent', return_value = [1,2,3,4,5,6])
-    assert FaceVerification().verify(user_id, file_name) == True
+    db = next(get_db())
+    assert FaceVerification(db).verify(user_id, file_name) == True
     vector.assert_called_once()

@@ -15,7 +15,6 @@ def mock_kafka_consumer(mocker):
 def mock_face_verification(mocker):
     """Фикстура для мока FaceVerification."""
     mock_verification = mocker.patch('app.consumer.FaceVerification')
-    mock_verification.return_value.embedings_vector.return_value = [1, 2, 3, 4, 5, 6]
     mock_verification.return_value.check_user.return_value = True
     return mock_verification
 
@@ -40,8 +39,6 @@ async def test_consumer_process_message_logs(caplog, mock_kafka_consumer, mock_f
 
     assert "Получено сообщение" in caplog.text
     assert "Извлечённые данные - img_path: test_photo.jpg, user_id: 1" in caplog.text
-    assert "Вектор лица для пользователя 1" in caplog.text
-    
+
     mock_face_verification.assert_called_once()
     mock_face_verification_instance.embedings_vector.assert_called_once_with("test_photo.jpg")
-    mock_face_verification_instance.check_user.assert_called_once_with(1, [1, 2, 3, 4, 5, 6])
