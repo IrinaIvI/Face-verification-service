@@ -44,7 +44,8 @@ service:
   port: 8003
 
 ingress:
-  enabled: false
+  enabled: true
+  host: face-verification.com
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -93,6 +94,7 @@ postgres:
   userKey: postgres-user
   passwordKey: postgres-password
   dbName: iivashko
+
 
 app:
   nameService: ivashko-face-verification

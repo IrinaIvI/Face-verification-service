@@ -20,7 +20,7 @@ spec:
         - name: PYTHONPATH
           value: /workspace/src/app
         - name: KAFKA_HOST
-          value: infro-kafka-controller-headless:9092
+          value: infra-kafka-controller-headless:9092
         - name: POSTGRES_HOST
           value: http://postgres-service:5432
         - name: POSTGRES_USER

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ivashko-face-verification-ingress
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.nameContainer | lower | replace " " "-" }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.app.nameContainer }}
+            port:
+              number: {{ .Values.service.port }}
