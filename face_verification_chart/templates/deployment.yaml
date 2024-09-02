@@ -19,6 +19,8 @@ spec:
           env:
             - name: POSTGRES_HOST
               value: {{ .Values.postgres.host }}
+            - name: KAFKA_HOST
+              value: {{ .Values.kafka.host }}
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:

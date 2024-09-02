@@ -88,13 +88,15 @@ tolerations: []
 
 affinity: {}
 
+kafka:
+  host: infra-kafka-controller-headless:9092
+
 postgres:
   host: http://postgres-service:5432
   secretName: postgres-secret
   userKey: postgres-user
   passwordKey: postgres-password
   dbName: iivashko
-
 
 app:
   nameService: ivashko-face-verification
