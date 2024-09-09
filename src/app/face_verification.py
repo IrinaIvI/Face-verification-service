@@ -1,46 +1,17 @@
 from deepface import DeepFace
-from dataclasses import dataclass, field
-
-
-@dataclass
-class User:
-    """Класс создание пользователя."""
-
-    id: int
-    verified: bool = False
-    vector: list[float] = field(default_factory=list[float])
-
-
-class UserStorage:
-    """Класс хранилища с пользователями."""
-
-    storage: dict[str, User] = {}
-
-    def add_user(self, user: User):
-        """Добавление пользователя в базу."""
-        UserStorage().storage['FaceNet'] = user
-
-    def get_user(self, user_id: int) -> User:
-        """Получение пользователя по айди."""
-        for model, user in UserStorage().storage.items():
-            if model == FaceVerification.model:
-                if user.id == user_id:
-                    return user
-
-    def update_user(self, user: User) -> User:
-        """Обновление существующего пользователя."""
-        for model, current_user in UserStorage().storage.items():
-            if model == FaceVerification.model:
-                if current_user.id == user.id:
-                    current_user = user
-                    return current_user
+from app.models import UserFaceData
+from datetime import datetime
+from sqlalchemy.orm import Session
+import logging
+logging.basicConfig(level=logging.INFO)
 
 
 class FaceVerification:
     """Класс обработки фотографии."""
 
-    user_storage: UserStorage = UserStorage()
-    model: str = 'FaceNet'
+    def __init__(self, db: Session):
+        """Инициализация класса верификации."""
+        self.db = db
 
     def embedings_vector(self, img_path: str) -> list[float]:
         """Формирование вектора."""
@@ -49,22 +20,43 @@ class FaceVerification:
 
     def verify(self, user_id: int, img_path: str) -> bool:
         """Верификация пользователя."""
-        vector = self.embedings_vector(img_path)
-        return self.check_user(user_id, vector)
+        try:
+            vector = self.embedings_vector(img_path=img_path)
+        except Exception as verify_error:
+            logging.error(f'Ошибка при создании вектора: {verify_error}')
+            return False
+
+        verified = self.check_user(user_id, vector)
+        return verified
 
     def check_user(self, user_id: int, vector: list[float]) -> bool:
         """Проверка наличия пользователя в базе."""
         verified = False
-        user = self.user_storage.get_user(user_id)
-        if user:
-            if user.vector == vector:
-                verified = True
+        embedding_vector = vector[0].get('embedding')
+
+        try:
+            user_face_data = self.db.query(UserFaceData).filter_by(user_id=user_id).first()
+
+            if user_face_data:
+                if user_face_data.vector == vector:
+                    verified = True
+                else:
+                    user_face_data.vector = vector
+                    user_face_data.updated_at = datetime.now()
+                    self.db.commit()
+                    verified = True
             else:
+                new_user_face_data = UserFaceData(
+                    user_id=user_id,
+                    vector=embedding_vector,
+                    created_at=datetime.now(),
+                    updated_at=datetime.now(),
+                )
+                self.db.add(new_user_face_data)
+                self.db.commit()
                 verified = True
-                updated_user = User(user_id, verified, vector)
-                self.user_storage.update_user(updated_user)
-        else:
-            verified = True
-            new_user = User(user_id, verified, vector)
-            self.user_storage.add_user(new_user)
+
+        except Exception as error_db:
+            logging.error(f'Ошибка при доступе к базе данных: {error_db}')
+
         return verified

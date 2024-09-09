@@ -13,8 +13,11 @@ deepface = "^0.0.92"
 pytest-mock = "^3.14.0"
 fastapi = "^0.111.1"
 uvicorn = "^0.30.5"
+sqlalchemy = "^2.0.32"
+psycopg2-binary = "^2.9.9"
+alembic = "^1.13.2"
 aiokafka = "^0.11.0"
-pytest-asyncio = "^0.23.8"
+pytest-asyncio = "^0.24.0"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.19.2"
