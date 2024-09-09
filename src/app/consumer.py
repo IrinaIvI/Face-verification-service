@@ -5,7 +5,7 @@ import json
 from app.face_verification import FaceVerification
 from app.database import get_db
 
-KAFKA_BROKER = os.environ.get('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9092')
+KAFKA_BROKER = os.environ.get('KAFKA_BOOTSTRAP_SERVERS', 'kafka:9092')
 KAFKA_TOPIC = 'ivashko_topic_face_verification'
 logging.basicConfig(level=logging.INFO)
 

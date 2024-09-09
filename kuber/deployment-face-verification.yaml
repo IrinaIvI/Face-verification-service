@@ -17,10 +17,10 @@ spec:
       - name: face-verification
         image: merewhale/face_verification:1.0.0
         env:
-        - name: PYTHONPATH
-          value: /workspace/src/app
+        # - name: PYTHONPATH
+        #   value: /workspace/src/app
         - name: KAFKA_HOST
-          value: infro-kafka-controller-headless:9092
+          value: infra-kafka-controller-headless:9092
         - name: POSTGRES_HOST
           value: http://postgres-service:5432
         - name: POSTGRES_USER
